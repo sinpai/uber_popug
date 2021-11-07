@@ -1,577 +1,399 @@
-  [1m[36m (4.6ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
-  [1m[35m (3.3ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
-  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
-Migrating to CreateTasks (20211107081822)
-  [1m[35m (0.1ms)[0m  BEGIN
-  [1m[36m (1.2ms)[0m  [1mCREATE TABLE "tasks" ("id" serial primary key, "public_id" uuid DEFAULT gen_random_uuid(), "description" character varying, "status" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
-  [1m[35m (0.1ms)[0m  ROLLBACK
-  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
-Migrating to CreateTasks (20211107081822)
-  [1m[35m (0.1ms)[0m  BEGIN
-  [1m[36mSQL (6.2ms)[0m  [1mCREATE EXTENSION IF NOT EXISTS "pgcrypto"[0m
-  [1m[35m (6.0ms)[0m  CREATE TABLE "tasks" ("id" serial primary key, "public_id" uuid DEFAULT gen_random_uuid(), "description" character varying, "status" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
-  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20211107081822"]]
-  [1m[35m (1.4ms)[0m  COMMIT
-Migrating to CreateAccounts (20211107081846)
-  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
-  [1m[35mSQL (0.1ms)[0m  CREATE EXTENSION IF NOT EXISTS "pgcrypto"
-  [1m[36m (7.0ms)[0m  [1mCREATE TABLE "accounts" ("id" serial primary key, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "public_id" uuid DEFAULT gen_random_uuid(), "full_name" character varying, "position" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "disabled_at" timestamp) [0m
-  [1m[35m (4.1ms)[0m  CREATE UNIQUE INDEX  "index_accounts_on_email" ON "accounts"  ("email")
-  [1m[36m (2.8ms)[0m  [1mCREATE UNIQUE INDEX  "index_accounts_on_reset_password_token" ON "accounts"  ("reset_password_token")[0m
-  [1m[35m (0.4ms)[0m  ROLLBACK
-  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
-Migrating to CreateAccounts (20211107081846)
-  [1m[35m (0.4ms)[0m  BEGIN
-  [1m[36mSQL (0.7ms)[0m  [1mCREATE EXTENSION IF NOT EXISTS "pgcrypto"[0m
-  [1m[35m (12.5ms)[0m  CREATE TABLE "accounts" ("id" serial primary key, "email" character varying DEFAULT '' NOT NULL, "public_id" uuid DEFAULT gen_random_uuid(), "full_name" character varying, "position" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "disabled_at" timestamp) 
-  [1m[36m (4.1ms)[0m  [1mCREATE UNIQUE INDEX  "index_accounts_on_email" ON "accounts"  ("email")[0m
-  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20211107081846"]]
-  [1m[36m (1.4ms)[0m  [1mCOMMIT[0m
-Migrating to AddRoleToAccount (20211107082337)
-  [1m[35m (0.4ms)[0m  BEGIN
-  [1m[36m (1.8ms)[0m  [1m      CREATE TYPE account_roles AS ENUM ('admin', 'accounting_clerk', 'repairman', 'employee');
+  [1m[35m (26.4ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4383706967230150875)[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateAccounts (20211107095332)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "pgcrypto"[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "accounts" ("id" bigserial primary key, "email" character varying DEFAULT '' NOT NULL, "public_id" uuid DEFAULT gen_random_uuid() NOT NULL, "full_name" character varying, "position" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "disabled_at" timestamp)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(4383706967230150875)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4383706967230150875)[0m
+  [1m[35m (7.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateAccounts (20211107095332)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "pgcrypto"[0m
+  [1m[35m (1.1ms)[0m  [1m[35mDROP TABLE "accounts"[0m
+  [1m[35m (19.5ms)[0m  [1m[35mCREATE TABLE "accounts" ("id" bigserial primary key, "email" character varying DEFAULT '' NOT NULL, "public_id" uuid DEFAULT gen_random_uuid() NOT NULL, "full_name" character varying, "position" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "disabled_at" timestamp)[0m
+  [1m[35m (3.8ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_accounts_on_email" ON "accounts" ("email")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (1.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20211107095332"]]
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTasks (20211107095338)
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "pgcrypto"[0m
+  [1m[35m (1.8ms)[0m  [1m[35mDROP TABLE "tasks"[0m
+  [1m[35m (7.1ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" bigserial primary key, "public_id" uuid DEFAULT gen_random_uuid() NOT NULL, "description" character varying, "status" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20211107095338"]]
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddRoleToAccount (20211107095546)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35m      CREATE TYPE account_roles AS ENUM ('admin', 'accounting_clerk', 'repairman', 'employee');
 [0m
-  [1m[35m (1.1ms)[0m  ALTER TABLE "accounts" ADD "role" account_roles DEFAULT 'employee' NOT NULL
-  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20211107082337"]]
-  [1m[35m (1.5ms)[0m  COMMIT
-  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
-  [1m[35m (3.6ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
-FROM pg_constraint c
-JOIN pg_class t1 ON c.conrelid = t1.oid
-JOIN pg_class t2 ON c.confrelid = t2.oid
-JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
-JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
-JOIN pg_namespace t3 ON c.connamespace = t3.oid
-WHERE c.contype = 'f'
-  AND t1.relname = 'accounts'
-  AND t3.nspname = ANY (current_schemas(false))
-ORDER BY c.conname
-
-  [1m[36m (2.7ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
-FROM pg_constraint c
-JOIN pg_class t1 ON c.conrelid = t1.oid
-JOIN pg_class t2 ON c.confrelid = t2.oid
-JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
-JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
-JOIN pg_namespace t3 ON c.connamespace = t3.oid
-WHERE c.contype = 'f'
-  AND t1.relname = 'tasks'
-  AND t3.nspname = ANY (current_schemas(false))
-ORDER BY c.conname
-[0m
-
-
-Started GET "/" for 127.0.0.1 at 2021-11-07 10:42:46 +0200
-  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
-Processing by Rails::WelcomeController#index as HTML
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/railties-4.2.10/lib/rails/templates/rails/welcome/index.html.erb (0.9ms)
-Completed 200 OK in 7ms (Views: 6.9ms | ActiveRecord: 0.0ms)
-
-
-Started GET "/" for 127.0.0.1 at 2021-11-07 10:47:38 +0200
-  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(4383706967230150875)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4383706967230150875)[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddRoleToAccount (20211107095546)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(4383706967230150875)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4383706967230150875)[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddRoleToAccount (20211107095546)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "accounts" ADD "role" account_roles DEFAULT 'employee' NOT NULL[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20211107095546"]]
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2021-11-07 10:01:45.306656"], ["updated_at", "2021-11-07 10:01:45.306656"]]
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(4383706967230150875)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/tasks" for 127.0.0.1 at 2021-11-07 12:05:27 +0200
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
 Processing by TasksController#index as HTML
-  [1m[35mTask Load (0.4ms)[0m  SELECT "tasks".* FROM "tasks"
-  Rendered tasks/index.html.erb within layouts/application (9.2ms)
-Completed 200 OK in 207ms (Views: 204.7ms | ActiveRecord: 1.0ms)
+Completed 406 Not Acceptable in 5ms (ActiveRecord: 0.0ms | Allocations: 3305)
 
 
-Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2021-11-07 10:47:39 +0200
+  
+ActionController::MissingExactTemplate (TasksController#index is missing a template for request formats: text/html):
+  
+actionpack (6.1.4.1) lib/action_controller/metal/implicit_render.rb:45:in `default_render'
+actionpack (6.1.4.1) lib/action_controller/metal/basic_implicit_render.rb:6:in `block in send_action'
+actionpack (6.1.4.1) lib/action_controller/metal/basic_implicit_render.rb:6:in `tap'
+actionpack (6.1.4.1) lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'
+actionpack (6.1.4.1) lib/abstract_controller/base.rb:228:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (6.1.4.1) lib/abstract_controller/callbacks.rb:42:in `block in process_action'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:117:in `block in run_callbacks'
+actiontext (6.1.4.1) lib/action_text/rendering.rb:20:in `with_renderer'
+actiontext (6.1.4.1) lib/action_text/engine.rb:59:in `block (4 levels) in <class:Engine>'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:126:in `instance_exec'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:126:in `block in run_callbacks'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:137:in `run_callbacks'
+actionpack (6.1.4.1) lib/abstract_controller/callbacks.rb:41:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/rescue.rb:22:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/instrumentation.rb:34:in `block in process_action'
+activesupport (6.1.4.1) lib/active_support/notifications.rb:203:in `block in instrument'
+activesupport (6.1.4.1) lib/active_support/notifications/instrumenter.rb:24:in `instrument'
+activesupport (6.1.4.1) lib/active_support/notifications.rb:203:in `instrument'
+actionpack (6.1.4.1) lib/action_controller/metal/instrumentation.rb:33:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/params_wrapper.rb:249:in `process_action'
+activerecord (6.1.4.1) lib/active_record/railties/controller_runtime.rb:27:in `process_action'
+actionpack (6.1.4.1) lib/abstract_controller/base.rb:165:in `process'
+actionview (6.1.4.1) lib/action_view/rendering.rb:39:in `process'
+actionpack (6.1.4.1) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (6.1.4.1) lib/action_controller/metal.rb:254:in `dispatch'
+actionpack (6.1.4.1) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (6.1.4.1) lib/action_dispatch/routing/route_set.rb:33:in `serve'
+actionpack (6.1.4.1) lib/action_dispatch/journey/router.rb:50:in `block in serve'
+actionpack (6.1.4.1) lib/action_dispatch/journey/router.rb:32:in `each'
+actionpack (6.1.4.1) lib/action_dispatch/journey/router.rb:32:in `serve'
+actionpack (6.1.4.1) lib/action_dispatch/routing/route_set.rb:842:in `call'
+rack (2.2.3) lib/rack/tempfile_reaper.rb:15:in `call'
+rack (2.2.3) lib/rack/etag.rb:27:in `call'
+rack (2.2.3) lib/rack/conditional_get.rb:27:in `call'
+rack (2.2.3) lib/rack/head.rb:12:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/http/permissions_policy.rb:22:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/http/content_security_policy.rb:18:in `call'
+rack (2.2.3) lib/rack/session/abstract/id.rb:266:in `context'
+rack (2.2.3) lib/rack/session/abstract/id.rb:260:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/cookies.rb:689:in `call'
+activerecord (6.1.4.1) lib/active_record/migration.rb:601:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:98:in `run_callbacks'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/debug_exceptions.rb:29:in `call'
+web-console (4.1.0) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.1.0) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.1.0) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.1.0) lib/web_console/middleware.rb:17:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+railties (6.1.4.1) lib/rails/rack/logger.rb:37:in `call_app'
+railties (6.1.4.1) lib/rails/rack/logger.rb:26:in `block in call'
+activesupport (6.1.4.1) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (6.1.4.1) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (6.1.4.1) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (6.1.4.1) lib/rails/rack/logger.rb:26:in `call'
+sprockets-rails (3.2.2) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.3) lib/rack/method_override.rb:24:in `call'
+rack (2.2.3) lib/rack/runtime.rb:22:in `call'
+activesupport (6.1.4.1) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/static.rb:24:in `call'
+rack (2.2.3) lib/rack/sendfile.rb:110:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/host_authorization.rb:98:in `call'
+rack-mini-profiler (2.3.3) lib/mini_profiler/profiler.rb:393:in `call'
+webpacker (5.4.3) lib/webpacker/dev_server_proxy.rb:25:in `perform_request'
+rack-proxy (0.7.0) lib/rack/proxy.rb:63:in `call'
+railties (6.1.4.1) lib/rails/engine.rb:539:in `call'
+puma (5.5.2) lib/puma/configuration.rb:249:in `call'
+puma (5.5.2) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.5.2) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.5.2) lib/puma/request.rb:76:in `handle_request'
+puma (5.5.2) lib/puma/server.rb:447:in `process_client'
+puma (5.5.2) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/tasks" for 127.0.0.1 at 2021-11-07 12:06:39 +0200
+Processing by TasksController#index as HTML
+Completed 406 Not Acceptable in 1ms (ActiveRecord: 0.0ms | Allocations: 896)
 
 
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 10:47:39 +0200
+  
+ActionController::MissingExactTemplate (TasksController#index is missing a template for request formats: text/html):
+  
+actionpack (6.1.4.1) lib/action_controller/metal/implicit_render.rb:45:in `default_render'
+actionpack (6.1.4.1) lib/action_controller/metal/basic_implicit_render.rb:6:in `block in send_action'
+actionpack (6.1.4.1) lib/action_controller/metal/basic_implicit_render.rb:6:in `tap'
+actionpack (6.1.4.1) lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'
+actionpack (6.1.4.1) lib/abstract_controller/base.rb:228:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (6.1.4.1) lib/abstract_controller/callbacks.rb:42:in `block in process_action'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:117:in `block in run_callbacks'
+actiontext (6.1.4.1) lib/action_text/rendering.rb:20:in `with_renderer'
+actiontext (6.1.4.1) lib/action_text/engine.rb:59:in `block (4 levels) in <class:Engine>'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:126:in `instance_exec'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:126:in `block in run_callbacks'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:137:in `run_callbacks'
+actionpack (6.1.4.1) lib/abstract_controller/callbacks.rb:41:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/rescue.rb:22:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/instrumentation.rb:34:in `block in process_action'
+activesupport (6.1.4.1) lib/active_support/notifications.rb:203:in `block in instrument'
+activesupport (6.1.4.1) lib/active_support/notifications/instrumenter.rb:24:in `instrument'
+activesupport (6.1.4.1) lib/active_support/notifications.rb:203:in `instrument'
+actionpack (6.1.4.1) lib/action_controller/metal/instrumentation.rb:33:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/params_wrapper.rb:249:in `process_action'
+activerecord (6.1.4.1) lib/active_record/railties/controller_runtime.rb:27:in `process_action'
+actionpack (6.1.4.1) lib/abstract_controller/base.rb:165:in `process'
+actionview (6.1.4.1) lib/action_view/rendering.rb:39:in `process'
+actionpack (6.1.4.1) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (6.1.4.1) lib/action_controller/metal.rb:254:in `dispatch'
+actionpack (6.1.4.1) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (6.1.4.1) lib/action_dispatch/routing/route_set.rb:33:in `serve'
+actionpack (6.1.4.1) lib/action_dispatch/journey/router.rb:50:in `block in serve'
+actionpack (6.1.4.1) lib/action_dispatch/journey/router.rb:32:in `each'
+actionpack (6.1.4.1) lib/action_dispatch/journey/router.rb:32:in `serve'
+actionpack (6.1.4.1) lib/action_dispatch/routing/route_set.rb:842:in `call'
+rack (2.2.3) lib/rack/tempfile_reaper.rb:15:in `call'
+rack (2.2.3) lib/rack/etag.rb:27:in `call'
+rack (2.2.3) lib/rack/conditional_get.rb:27:in `call'
+rack (2.2.3) lib/rack/head.rb:12:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/http/permissions_policy.rb:22:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/http/content_security_policy.rb:18:in `call'
+rack (2.2.3) lib/rack/session/abstract/id.rb:266:in `context'
+rack (2.2.3) lib/rack/session/abstract/id.rb:260:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/cookies.rb:689:in `call'
+activerecord (6.1.4.1) lib/active_record/migration.rb:601:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:98:in `run_callbacks'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/debug_exceptions.rb:29:in `call'
+web-console (4.1.0) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.1.0) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.1.0) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.1.0) lib/web_console/middleware.rb:17:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+railties (6.1.4.1) lib/rails/rack/logger.rb:37:in `call_app'
+railties (6.1.4.1) lib/rails/rack/logger.rb:26:in `block in call'
+activesupport (6.1.4.1) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (6.1.4.1) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (6.1.4.1) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (6.1.4.1) lib/rails/rack/logger.rb:26:in `call'
+sprockets-rails (3.2.2) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.3) lib/rack/method_override.rb:24:in `call'
+rack (2.2.3) lib/rack/runtime.rb:22:in `call'
+activesupport (6.1.4.1) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/static.rb:24:in `call'
+rack (2.2.3) lib/rack/sendfile.rb:110:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/host_authorization.rb:98:in `call'
+rack-mini-profiler (2.3.3) lib/mini_profiler/profiler.rb:393:in `call'
+webpacker (5.4.3) lib/webpacker/dev_server_proxy.rb:25:in `perform_request'
+rack-proxy (0.7.0) lib/rack/proxy.rb:63:in `call'
+railties (6.1.4.1) lib/rails/engine.rb:539:in `call'
+puma (5.5.2) lib/puma/configuration.rb:249:in `call'
+puma (5.5.2) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.5.2) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.5.2) lib/puma/request.rb:76:in `handle_request'
+puma (5.5.2) lib/puma/server.rb:447:in `process_client'
+puma (5.5.2) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2021-11-07 12:06:45 +0200
+Processing by TasksController#index as HTML
+Completed 406 Not Acceptable in 2ms (ActiveRecord: 0.0ms | Allocations: 543)
 
 
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 10:47:39 +0200
+  
+ActionController::MissingExactTemplate (TasksController#index is missing a template for request formats: text/html):
+  
+actionpack (6.1.4.1) lib/action_controller/metal/implicit_render.rb:45:in `default_render'
+actionpack (6.1.4.1) lib/action_controller/metal/basic_implicit_render.rb:6:in `block in send_action'
+actionpack (6.1.4.1) lib/action_controller/metal/basic_implicit_render.rb:6:in `tap'
+actionpack (6.1.4.1) lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'
+actionpack (6.1.4.1) lib/abstract_controller/base.rb:228:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (6.1.4.1) lib/abstract_controller/callbacks.rb:42:in `block in process_action'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:117:in `block in run_callbacks'
+actiontext (6.1.4.1) lib/action_text/rendering.rb:20:in `with_renderer'
+actiontext (6.1.4.1) lib/action_text/engine.rb:59:in `block (4 levels) in <class:Engine>'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:126:in `instance_exec'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:126:in `block in run_callbacks'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:137:in `run_callbacks'
+actionpack (6.1.4.1) lib/abstract_controller/callbacks.rb:41:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/rescue.rb:22:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/instrumentation.rb:34:in `block in process_action'
+activesupport (6.1.4.1) lib/active_support/notifications.rb:203:in `block in instrument'
+activesupport (6.1.4.1) lib/active_support/notifications/instrumenter.rb:24:in `instrument'
+activesupport (6.1.4.1) lib/active_support/notifications.rb:203:in `instrument'
+actionpack (6.1.4.1) lib/action_controller/metal/instrumentation.rb:33:in `process_action'
+actionpack (6.1.4.1) lib/action_controller/metal/params_wrapper.rb:249:in `process_action'
+activerecord (6.1.4.1) lib/active_record/railties/controller_runtime.rb:27:in `process_action'
+actionpack (6.1.4.1) lib/abstract_controller/base.rb:165:in `process'
+actionview (6.1.4.1) lib/action_view/rendering.rb:39:in `process'
+actionpack (6.1.4.1) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (6.1.4.1) lib/action_controller/metal.rb:254:in `dispatch'
+actionpack (6.1.4.1) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (6.1.4.1) lib/action_dispatch/routing/route_set.rb:33:in `serve'
+actionpack (6.1.4.1) lib/action_dispatch/journey/router.rb:50:in `block in serve'
+actionpack (6.1.4.1) lib/action_dispatch/journey/router.rb:32:in `each'
+actionpack (6.1.4.1) lib/action_dispatch/journey/router.rb:32:in `serve'
+actionpack (6.1.4.1) lib/action_dispatch/routing/route_set.rb:842:in `call'
+rack (2.2.3) lib/rack/tempfile_reaper.rb:15:in `call'
+rack (2.2.3) lib/rack/etag.rb:27:in `call'
+rack (2.2.3) lib/rack/conditional_get.rb:27:in `call'
+rack (2.2.3) lib/rack/head.rb:12:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/http/permissions_policy.rb:22:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/http/content_security_policy.rb:18:in `call'
+rack (2.2.3) lib/rack/session/abstract/id.rb:266:in `context'
+rack (2.2.3) lib/rack/session/abstract/id.rb:260:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/cookies.rb:689:in `call'
+activerecord (6.1.4.1) lib/active_record/migration.rb:601:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (6.1.4.1) lib/active_support/callbacks.rb:98:in `run_callbacks'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/debug_exceptions.rb:29:in `call'
+web-console (4.1.0) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.1.0) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.1.0) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.1.0) lib/web_console/middleware.rb:17:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+railties (6.1.4.1) lib/rails/rack/logger.rb:37:in `call_app'
+railties (6.1.4.1) lib/rails/rack/logger.rb:26:in `block in call'
+activesupport (6.1.4.1) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (6.1.4.1) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (6.1.4.1) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (6.1.4.1) lib/rails/rack/logger.rb:26:in `call'
+sprockets-rails (3.2.2) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.3) lib/rack/method_override.rb:24:in `call'
+rack (2.2.3) lib/rack/runtime.rb:22:in `call'
+activesupport (6.1.4.1) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/static.rb:24:in `call'
+rack (2.2.3) lib/rack/sendfile.rb:110:in `call'
+actionpack (6.1.4.1) lib/action_dispatch/middleware/host_authorization.rb:98:in `call'
+rack-mini-profiler (2.3.3) lib/mini_profiler/profiler.rb:393:in `call'
+webpacker (5.4.3) lib/webpacker/dev_server_proxy.rb:25:in `perform_request'
+rack-proxy (0.7.0) lib/rack/proxy.rb:63:in `call'
+railties (6.1.4.1) lib/rails/engine.rb:539:in `call'
+puma (5.5.2) lib/puma/configuration.rb:249:in `call'
+puma (5.5.2) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.5.2) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.5.2) lib/puma/request.rb:76:in `handle_request'
+puma (5.5.2) lib/puma/server.rb:447:in `process_client'
+puma (5.5.2) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2021-11-07 12:07:47 +0200
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by TasksController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.haml within layouts/application
+  [1m[36mTask Load (1.0ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks"[0m
+  ↳ app/views/tasks/index.html.haml:10
+  Rendered tasks/index.html.haml within layouts/application (Duration: 12.5ms | Allocations: 9406)
+[Webpacker] Compiling...
+[Webpacker] Compiled all packs in /home/sinpai/code/uber_popug/tasks/public/packs
+[Webpacker] Hash: ed24ecc38ffa3f880af6
+Version: webpack 4.46.0
+Time: 873ms
+Built at: 07.11.2021 12:07:49
+                                     Asset       Size       Chunks                         Chunk Names
+    js/application-b79847a82961d80177ce.js   71.5 KiB  application  [emitted] [immutable]  application
+js/application-b79847a82961d80177ce.js.map   80.1 KiB  application  [emitted] [dev]        application
+                             manifest.json  364 bytes               [emitted]              
+Entrypoint application = js/application-b79847a82961d80177ce.js js/application-b79847a82961d80177ce.js.map
+[./app/javascript/channels sync recursive _channel\.js$] ./app/javascript/channels sync _channel\.js$ 160 bytes {application} [built]
+[./app/javascript/channels/index.js] 211 bytes {application} [built]
+[./app/javascript/packs/application.js] 435 bytes {application} [built]
+[./node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 552 bytes {application} [built]
+    + 2 hidden modules
+
+  Rendered layout layouts/application.html.erb (Duration: 1854.5ms | Allocations: 22835)
+Completed 200 OK in 1859ms (Views: 1852.9ms | ActiveRecord: 3.2ms | Allocations: 25554)
 
 
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 10:47:39 +0200
-
-
-Started GET "/tasks/new" for 127.0.0.1 at 2021-11-07 10:47:40 +0200
+Started GET "/tasks/new" for 127.0.0.1 at 2021-11-07 12:07:51 +0200
 Processing by TasksController#new as HTML
-  Rendered tasks/_form.html.erb (6.1ms)
-  Rendered tasks/new.html.erb within layouts/application (9.6ms)
-Completed 200 OK in 25ms (Views: 18.1ms | ActiveRecord: 1.8ms)
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.haml (Duration: 9.4ms | Allocations: 5964)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 10.4ms | Allocations: 6315)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layout layouts/application.html.erb (Duration: 13.5ms | Allocations: 9073)
+Completed 200 OK in 29ms (Views: 14.1ms | ActiveRecord: 4.4ms | Allocations: 12670)
 
 
-Started POST "/tasks" for 127.0.0.1 at 2021-11-07 10:47:42 +0200
+Started POST "/tasks" for 127.0.0.1 at 2021-11-07 12:07:55 +0200
 Processing by TasksController#create as HTML
-  Parameters: {"utf8"=>"✓", "authenticity_token"=>"nUf2UpSjZx95Xa0wt8yqUjsZV4X5n8EcSv5IqiHY+HjjCK4CwzakCjgT2ps6pFLZqwbAt7F/A8lK0Y3iH+DkSQ==", "commit"=>"Create Task"}
-  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
-  [1m[35mSQL (0.7ms)[0m  INSERT INTO "tasks" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"  [["created_at", "2021-11-07 08:47:42.354147"], ["updated_at", "2021-11-07 08:47:42.354147"]]
-  [1m[36m (1.6ms)[0m  [1mCOMMIT[0m
+  Parameters: {"authenticity_token"=>"[FILTERED]", "task"=>{"description"=>"fold"}, "commit"=>"Create Task"}
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.0ms | Allocations: 662)
+
+
+  
+ActiveModel::ForbiddenAttributesError (ActiveModel::ForbiddenAttributesError):
+  
+app/controllers/tasks_controller.rb:24:in `create'
+Started POST "/tasks" for 127.0.0.1 at 2021-11-07 12:23:33 +0200
+Processing by TasksController#create as HTML
+  Parameters: {"authenticity_token"=>"[FILTERED]", "task"=>{"description"=>"fold"}, "commit"=>"Create Task"}
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:27:in `block in create'
+  [1m[36mTask Create (1.3ms)[0m  [1m[32mINSERT INTO "tasks" ("description", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["description", "fold"], ["created_at", "2021-11-07 10:23:33.357898"], ["updated_at", "2021-11-07 10:23:33.357898"]]
+  ↳ app/controllers/tasks_controller.rb:27:in `block in create'
+  [1m[36mTRANSACTION (2.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:27:in `block in create'
 Redirected to http://localhost:3000/tasks/1
-Completed 302 Found in 6ms (ActiveRecord: 2.5ms)
+Completed 302 Found in 24ms (ActiveRecord: 10.9ms | Allocations: 8768)
 
 
-Started GET "/tasks/1" for 127.0.0.1 at 2021-11-07 10:47:42 +0200
+Started GET "/tasks/1" for 127.0.0.1 at 2021-11-07 12:23:33 +0200
 Processing by TasksController#show as HTML
   Parameters: {"id"=>"1"}
-  [1m[35mTask Load (0.6ms)[0m  SELECT  "tasks".* FROM "tasks" WHERE "tasks"."id" = $1 LIMIT 1  [["id", 1]]
-  Rendered tasks/show.html.erb within layouts/application (1.6ms)
-Completed 200 OK in 31ms (Views: 18.8ms | ActiveRecord: 0.6ms)
+  [1m[36mTask Load (0.9ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:62:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.haml within layouts/application
+  Rendered tasks/show.html.haml within layouts/application (Duration: 3.8ms | Allocations: 2274)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layout layouts/application.html.erb (Duration: 8.6ms | Allocations: 5161)
+Completed 200 OK in 16ms (Views: 9.6ms | ActiveRecord: 1.8ms | Allocations: 7080)
 
 
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:47:49 +0200
+Started GET "/tasks" for 127.0.0.1 at 2021-11-07 12:23:35 +0200
 Processing by TasksController#index as HTML
-  [1m[36mTask Load (0.5ms)[0m  [1mSELECT "tasks".* FROM "tasks"[0m
-  Rendered tasks/index.html.erb within layouts/application (3.1ms)
-Completed 200 OK in 25ms (Views: 23.7ms | ActiveRecord: 0.5ms)
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.haml within layouts/application
+  [1m[36mTask Load (1.5ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks"[0m
+  ↳ app/views/tasks/index.html.haml:10
+  Rendered tasks/index.html.haml within layouts/application (Duration: 5.8ms | Allocations: 1149)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layout layouts/application.html.erb (Duration: 13.1ms | Allocations: 4003)
+Completed 200 OK in 14ms (Views: 12.4ms | ActiveRecord: 1.5ms | Allocations: 4287)
 
 
-Started DELETE "/tasks/1" for 127.0.0.1 at 2021-11-07 10:47:51 +0200
-Processing by TasksController#destroy as HTML
-  Parameters: {"authenticity_token"=>"UnfPh6xYLvBuFWmHq+eruavEHM705TiuJpnmHm1rmsQsOJfX+83t5S9bHiwmj1MyO9uL/LwF+nsmtiNWU1OG9Q==", "id"=>"1"}
-  [1m[35mTask Load (0.2ms)[0m  SELECT  "tasks".* FROM "tasks" WHERE "tasks"."id" = $1 LIMIT 1  [["id", 1]]
-  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
-  [1m[35mSQL (0.1ms)[0m  DELETE FROM "tasks" WHERE "tasks"."id" = $1  [["id", 1]]
-  [1m[36m (2.3ms)[0m  [1mCOMMIT[0m
-Redirected to http://localhost:3000/tasks
-Completed 302 Found in 5ms (ActiveRecord: 2.7ms)
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:47:51 +0200
-Processing by TasksController#index as HTML
-  [1m[35mTask Load (0.3ms)[0m  SELECT "tasks".* FROM "tasks"
-  Rendered tasks/index.html.erb within layouts/application (1.4ms)
-Completed 200 OK in 13ms (Views: 12.1ms | ActiveRecord: 0.3ms)
-
-
-Started GET "/" for 127.0.0.1 at 2021-11-07 10:49:18 +0200
-  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
-Processing by TasksController#index as HTML
-  [1m[35mTask Load (0.3ms)[0m  SELECT "tasks".* FROM "tasks"
-  Rendered tasks/index.html.erb within layouts/application (6.7ms)
-Completed 200 OK in 124ms (Views: 122.3ms | ActiveRecord: 0.7ms)
-
-
-Started GET "/" for 127.0.0.1 at 2021-11-07 10:52:53 +0200
-Processing by TasksController#index as HTML
-  [1m[36mTask Load (0.2ms)[0m  [1mSELECT "tasks".* FROM "tasks"[0m
-  Rendered tasks/index.html.haml within layouts/application (5.0ms)
-Completed 200 OK in 13ms (Views: 11.0ms | ActiveRecord: 0.7ms)
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 10:52:53 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 10:52:53 +0200
-
-
-Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2021-11-07 10:52:53 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 10:52:53 +0200
-
-
-Started GET "/tasks/new" for 127.0.0.1 at 2021-11-07 10:52:54 +0200
-Processing by TasksController#new as HTML
-  Rendered tasks/_form.html.haml (9.4ms)
-  Rendered tasks/new.html.erb within layouts/application (12.1ms)
-Completed 500 Internal Server Error in 18ms (ActiveRecord: 1.7ms)
-
-ActionView::Template::Error (uninitialized constant ActionView::CompiledTemplates::TASK_STATUSES):
-    10: 
-    11:   .form-group
-    12:     = text_field_tag :description
-    13:     = select_field_tag :status, TASK_STATUSES
-    14:   .actions
-    15:     = f.submit
-  app/views/tasks/_form.html.haml:13:in `block in _app_views_tasks__form_html_haml___3134308456059861872_69863321650380'
-  app/views/tasks/_form.html.haml:1:in `_app_views_tasks__form_html_haml___3134308456059861872_69863321650380'
-  app/views/tasks/new.html.erb:3:in `_app_views_tasks_new_html_erb__1861207847367047967_69863330714620'
-
-
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_source.erb (4.1ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.0ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (18.5ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.3ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (19.1ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (35.1ms)
-
-
-Started GET "/tasks/new" for 127.0.0.1 at 2021-11-07 10:54:53 +0200
-Processing by TasksController#new as HTML
-  Rendered tasks/_form.html.haml (4.7ms)
-  Rendered tasks/new.html.erb within layouts/application (5.1ms)
-Completed 500 Internal Server Error in 12ms (ActiveRecord: 1.1ms)
-
-ActionView::Template::Error (undefined method `humanize' for :open:Symbol):
-    10: 
-    11:   .form-group
-    12:     = text_field_tag :description
-    13:     = select_tag :status, options_for_select(status_options)
-    14:   .actions
-    15:     = f.submit
-  app/helpers/tasks_helper.rb:4:in `block in status_options'
-  app/helpers/tasks_helper.rb:4:in `map'
-  app/helpers/tasks_helper.rb:4:in `status_options'
-  app/views/tasks/_form.html.haml:13:in `block in _app_views_tasks__form_html_haml___3134308456059861872_69863328819920'
-  app/views/tasks/_form.html.haml:1:in `_app_views_tasks__form_html_haml___3134308456059861872_69863328819920'
-  app/views/tasks/new.html.erb:3:in `_app_views_tasks_new_html_erb__1861207847367047967_69863330714620'
-
-
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_source.erb (4.1ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.6ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (17.8ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (11.4ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.4ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (23.0ms)
-
-
-Started GET "/tasks/new" for 127.0.0.1 at 2021-11-07 10:55:04 +0200
-Processing by TasksController#new as HTML
-  Rendered tasks/_form.html.haml (1.4ms)
-  Rendered tasks/new.html.erb within layouts/application (1.9ms)
-Completed 200 OK in 16ms (Views: 10.0ms | ActiveRecord: 1.7ms)
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 10:55:04 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 10:55:04 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 10:55:04 +0200
-
-
-Started GET "/tasks/new" for 127.0.0.1 at 2021-11-07 10:55:21 +0200
-Processing by TasksController#new as HTML
-  Rendered tasks/_form.html.haml (3.7ms)
-  Rendered tasks/new.html.erb within layouts/application (4.3ms)
-Completed 200 OK in 12ms (Views: 11.5ms | ActiveRecord: 0.0ms)
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 10:55:21 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 10:55:21 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 10:55:21 +0200
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:55:22 +0200
-Processing by TasksController#index as HTML
-  [1m[35mTask Load (0.2ms)[0m  SELECT "tasks".* FROM "tasks"
-  Rendered tasks/index.html.haml within layouts/application (1.0ms)
-Completed 200 OK in 12ms (Views: 11.2ms | ActiveRecord: 0.2ms)
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:56:37 +0200
-Processing by TasksController#index as HTML
-  [1m[36mTask Load (0.2ms)[0m  [1mSELECT "tasks".* FROM "tasks"[0m
-  Rendered tasks/index.html.haml within layouts/application (3.3ms)
-Completed 200 OK in 9ms (Views: 8.2ms | ActiveRecord: 0.2ms)
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 10:56:37 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 10:56:37 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 10:56:37 +0200
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:56:44 +0200
-Processing by TasksController#index as HTML
-  [1m[35mTask Load (0.3ms)[0m  SELECT "tasks".* FROM "tasks"
-  Rendered tasks/index.html.haml within layouts/application (5.2ms)
-Completed 200 OK in 13ms (Views: 12.5ms | ActiveRecord: 0.3ms)
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 10:56:44 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 10:56:44 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 10:56:44 +0200
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:57:39 +0200
-Processing by TasksController#index as HTML
-  [1m[36mTask Load (0.3ms)[0m  [1mSELECT "tasks".* FROM "tasks"[0m
-  Rendered tasks/index.html.haml within layouts/application (4.8ms)
-Completed 200 OK in 19ms (Views: 18.5ms | ActiveRecord: 0.3ms)
-
-
-Started GET "/assets/application.self-d81b03c1c22c859fbb03df6e53ca67c8ddc8e89af003e5741505c781a149e4f4.css?body=1" for 127.0.0.1 at 2021-11-07 10:57:39 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:39 +0200
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:39 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:39 +0200
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:57:40 +0200
-Processing by TasksController#index as HTML
-  [1m[35mTask Load (0.4ms)[0m  SELECT "tasks".* FROM "tasks"
-  Rendered tasks/index.html.haml within layouts/application (1.9ms)
-Completed 200 OK in 12ms (Views: 10.9ms | ActiveRecord: 0.4ms)
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:40 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:40 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:40 +0200
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:57:40 +0200
-Processing by TasksController#index as HTML
-  [1m[36mTask Load (0.3ms)[0m  [1mSELECT "tasks".* FROM "tasks"[0m
-  Rendered tasks/index.html.haml within layouts/application (1.1ms)
-Completed 200 OK in 8ms (Views: 7.5ms | ActiveRecord: 0.3ms)
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:40 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:40 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:40 +0200
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:57:49 +0200
-  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
-Processing by TasksController#index as HTML
-  [1m[35mTask Load (0.3ms)[0m  SELECT "tasks".* FROM "tasks"
-  Rendered tasks/index.html.haml within layouts/application (12.2ms)
-Completed 200 OK in 110ms (Views: 102.3ms | ActiveRecord: 0.8ms)
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:50 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:50 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 10:57:50 +0200
-
-
-Started GET "/tasks/new" for 127.0.0.1 at 2021-11-07 10:57:52 +0200
-Processing by TasksController#new as HTML
-  Rendered tasks/_form.html.haml (10.3ms)
-  Rendered tasks/new.html.erb within layouts/application (13.3ms)
-Completed 200 OK in 26ms (Views: 20.5ms | ActiveRecord: 1.9ms)
-
-
-Started POST "/tasks" for 127.0.0.1 at 2021-11-07 10:57:56 +0200
-Processing by TasksController#create as HTML
-  Parameters: {"utf8"=>"✓", "authenticity_token"=>"lcvbgaCPrdlhxbd2zMkt4JzzrRreC77cDciEPXw48LXrhIPR9xpuzCCLwN1BodVrDOw6KJbrfAkN50F1QgDshA==", "description"=>"test", "commit"=>"Create Task"}
-  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
-  [1m[35mSQL (0.6ms)[0m  INSERT INTO "tasks" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"  [["created_at", "2021-11-07 08:57:56.442056"], ["updated_at", "2021-11-07 08:57:56.442056"]]
-  [1m[36m (1.0ms)[0m  [1mCOMMIT[0m
-Redirected to http://localhost:3000/tasks/2
-Completed 302 Found in 4ms (ActiveRecord: 1.7ms)
-
-
-Started GET "/tasks/2" for 127.0.0.1 at 2021-11-07 10:57:56 +0200
-Processing by TasksController#show as HTML
-  Parameters: {"id"=>"2"}
-  [1m[35mTask Load (0.2ms)[0m  SELECT  "tasks".* FROM "tasks" WHERE "tasks"."id" = $1 LIMIT 1  [["id", 2]]
-  Rendered tasks/show.html.haml within layouts/application (2.5ms)
-Completed 200 OK in 11ms (Views: 8.0ms | ActiveRecord: 0.2ms)
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:57:58 +0200
-Processing by TasksController#index as HTML
-  [1m[36mTask Load (0.4ms)[0m  [1mSELECT "tasks".* FROM "tasks"[0m
-  Rendered tasks/index.html.haml within layouts/application (1.9ms)
-Completed 200 OK in 8ms (Views: 7.5ms | ActiveRecord: 0.4ms)
-
-
-Started DELETE "/tasks/2" for 127.0.0.1 at 2021-11-07 10:59:23 +0200
-Processing by TasksController#destroy as HTML
-  Parameters: {"authenticity_token"=>"cKX43Qxy6DUJG9jm8ZQ1Zz20lv58Aax2tKVfv5IehH8O6qCNW+crIEhVr018/M3srasBzDThbqO0ipr3rCaYTg==", "id"=>"2"}
-  [1m[35mTask Load (0.2ms)[0m  SELECT  "tasks".* FROM "tasks" WHERE "tasks"."id" = $1 LIMIT 1  [["id", 2]]
-  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
-  [1m[35mSQL (0.2ms)[0m  DELETE FROM "tasks" WHERE "tasks"."id" = $1  [["id", 2]]
-  [1m[36m (2.0ms)[0m  [1mCOMMIT[0m
-Redirected to http://localhost:3000/tasks
-Completed 302 Found in 23ms (ActiveRecord: 4.0ms)
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 10:59:23 +0200
-Processing by TasksController#index as HTML
-  [1m[35mTask Load (0.3ms)[0m  SELECT "tasks".* FROM "tasks"
-  Rendered tasks/index.html.haml within layouts/application (1.5ms)
-Completed 200 OK in 10ms (Views: 9.1ms | ActiveRecord: 0.3ms)
-
-
-Started GET "/tasks/new" for 127.0.0.1 at 2021-11-07 10:59:24 +0200
-Processing by TasksController#new as HTML
-  Rendered tasks/_form.html.haml (1.5ms)
-  Rendered tasks/new.html.erb within layouts/application (2.2ms)
-Completed 200 OK in 11ms (Views: 10.4ms | ActiveRecord: 0.0ms)
-
-
-Started POST "/tasks" for 127.0.0.1 at 2021-11-07 10:59:28 +0200
-Processing by TasksController#create as HTML
-  Parameters: {"utf8"=>"✓", "authenticity_token"=>"jGKKsYqJBBipxjPceJSvkMzBreZ/knZrGKoXCSKEQJ7yLdLh3RzHDeiIRHf1/FcbXN461DdytL4YhdJBHLxcrw==", "description"=>"test", "commit"=>"Create Task"}
-Completed 400 Bad Request in 1ms (ActiveRecord: 0.0ms)
-
-ActionController::ParameterMissing (param is missing or the value is empty: task):
-  app/controllers/tasks_controller.rb:72:in `task_params'
-  app/controllers/tasks_controller.rb:27:in `create'
-
-
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_source.erb (5.6ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.4ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (22.6ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.5ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.5ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.4ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (13.3ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (28.5ms)
-
-
-Started POST "/tasks" for 127.0.0.1 at 2021-11-07 10:59:39 +0200
-Processing by TasksController#create as HTML
-  Parameters: {"utf8"=>"✓", "authenticity_token"=>"jGKKsYqJBBipxjPceJSvkMzBreZ/knZrGKoXCSKEQJ7yLdLh3RzHDeiIRHf1/FcbXN461DdytL4YhdJBHLxcrw==", "description"=>"test", "commit"=>"Create Task"}
-Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.0ms)
-
-NoMethodError (undefined method `pry' for #<Binding:0x007f54d418ebd0>
-Did you mean?  try):
-  app/controllers/tasks_controller.rb:72:in `task_params'
-  app/controllers/tasks_controller.rb:27:in `create'
-
-
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_source.erb (3.0ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.1ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.5ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (15.0ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.5ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.1ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (10.9ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (23.8ms)
-
-
-Started POST "/tasks" for 127.0.0.1 at 2021-11-07 11:00:32 +0200
-  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
-Processing by TasksController#create as HTML
-  Parameters: {"utf8"=>"✓", "authenticity_token"=>"jGKKsYqJBBipxjPceJSvkMzBreZ/knZrGKoXCSKEQJ7yLdLh3RzHDeiIRHf1/FcbXN461DdytL4YhdJBHLxcrw==", "description"=>"test", "commit"=>"Create Task"}
-Completed 400 Bad Request in 12473ms (ActiveRecord: 0.0ms)
-
-ActionController::ParameterMissing (param is missing or the value is empty: task):
-  app/controllers/tasks_controller.rb:73:in `task_params'
-  app/controllers/tasks_controller.rb:27:in `create'
-
-
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_source.erb (2.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.1ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/actionpack-4.2.10/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (15.4ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.1ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (12.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.1ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.2ms)
-  Rendered /home/sinpai/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (23.6ms)
-
-
-Started GET "/tasks/new" for 127.0.0.1 at 2021-11-07 11:01:14 +0200
-Processing by TasksController#new as HTML
-  Rendered tasks/_form.html.haml (11.3ms)
-  Rendered tasks/new.html.erb within layouts/application (12.7ms)
-Completed 200 OK in 176ms (Views: 154.1ms | ActiveRecord: 7.2ms)
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 11:01:14 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 11:01:14 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 11:01:14 +0200
-
-
-Started POST "/tasks" for 127.0.0.1 at 2021-11-07 11:01:15 +0200
-Processing by TasksController#create as HTML
-  Parameters: {"utf8"=>"✓", "authenticity_token"=>"TqCHQ6UXBdkj1tBl0YrSD7VLnZeuWCNfU95dYU7ppB8w798T8oLGzGKYp85c4iqEJVQKpea44YpT8ZgpcNG4Lg==", "task"=>{"description"=>"test"}, "commit"=>"Create Task"}
-  [1m[35m (0.4ms)[0m  BEGIN
-  [1m[36mSQL (2.3ms)[0m  [1mINSERT INTO "tasks" ("description", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["description", "test"], ["created_at", "2021-11-07 09:01:21.683720"], ["updated_at", "2021-11-07 09:01:21.683720"]]
-  [1m[35m (19.2ms)[0m  COMMIT
-Redirected to http://localhost:3000/tasks/3
-Completed 302 Found in 6386ms (ActiveRecord: 22.4ms)
-
-
-Started GET "/tasks/3" for 127.0.0.1 at 2021-11-07 11:01:21 +0200
-Processing by TasksController#show as HTML
-  Parameters: {"id"=>"3"}
-  [1m[36mTask Load (0.9ms)[0m  [1mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."id" = $1 LIMIT 1[0m  [["id", 3]]
-  Rendered tasks/show.html.haml within layouts/application (4.5ms)
-Completed 200 OK in 27ms (Views: 14.7ms | ActiveRecord: 0.9ms)
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 11:01:24 +0200
-Processing by TasksController#index as HTML
-  [1m[35mTask Load (0.2ms)[0m  SELECT "tasks".* FROM "tasks"
-  Rendered tasks/index.html.haml within layouts/application (4.3ms)
-Completed 200 OK in 10ms (Views: 9.8ms | ActiveRecord: 0.2ms)
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 11:01:25 +0200
-Processing by TasksController#index as HTML
-  [1m[36mTask Load (0.3ms)[0m  [1mSELECT "tasks".* FROM "tasks"[0m
-  Rendered tasks/index.html.haml within layouts/application (1.3ms)
-Completed 200 OK in 7ms (Views: 6.1ms | ActiveRecord: 0.3ms)
-
-
-Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2021-11-07 11:01:25 +0200
-
-
-Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2021-11-07 11:01:25 +0200
-
-
-Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2021-11-07 11:01:25 +0200
-
-
-Started DELETE "/tasks/3" for 127.0.0.1 at 2021-11-07 11:01:34 +0200
-Processing by TasksController#destroy as HTML
-  Parameters: {"authenticity_token"=>"Iy5aFN6/51ScU9dYIw9QfHf4NnVe+EJF+G5NEn3Fti1dYQJEiSokQd0doPOuZ6j35+ehRxYYgJD4QYhaQ/2qHA==", "id"=>"3"}
-  [1m[35mTask Load (0.2ms)[0m  SELECT  "tasks".* FROM "tasks" WHERE "tasks"."id" = $1 LIMIT 1  [["id", 3]]
-  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
-  [1m[35mSQL (0.1ms)[0m  DELETE FROM "tasks" WHERE "tasks"."id" = $1  [["id", 3]]
-  [1m[36m (2.3ms)[0m  [1mCOMMIT[0m
-Redirected to http://localhost:3000/tasks
-Completed 302 Found in 4ms (ActiveRecord: 2.7ms)
-
-
-Started GET "/tasks" for 127.0.0.1 at 2021-11-07 11:01:34 +0200
-Processing by TasksController#index as HTML
-  [1m[35mTask Load (0.2ms)[0m  SELECT "tasks".* FROM "tasks"
-  Rendered tasks/index.html.haml within layouts/application (1.1ms)
-Completed 200 OK in 6ms (Views: 5.9ms | ActiveRecord: 0.2ms)

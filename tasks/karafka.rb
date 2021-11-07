@@ -1,83 +1,66 @@
 # frozen_string_literal: true
 
-# Non Ruby on Rails setup
-ENV['RACK_ENV'] ||= 'development'
-ENV['KARAFKA_ENV'] ||= ENV['RACK_ENV']
-Bundler.require(:default, ENV['KARAFKA_ENV'])
-# Karafka::Loader.load(Karafka::App.root)
-require 'json'
-require 'active_support/core_ext/hash'
-require './config/boot'
+ENV['RAILS_ENV'] ||= 'development'
+ENV['KARAFKA_ENV'] = ENV['RAILS_ENV']
+require ::File.expand_path('../config/environment', __FILE__)
+Rails.application.eager_load!
 
-Dir[
-  'apps/kafka_app/consumers/*.rb'
-].each {|file| require_relative file }
-
-#------------------------------------------------------
-
-class JsonDeserializer
-  def self.parse(message)
-    JSON.parse(message)
-  end
+# This lines will make Karafka print to stdout like puma or unicorn
+if Rails.env.development?
+  Rails.logger.extend(
+    ActiveSupport::Logger.broadcast(
+      ActiveSupport::Logger.new($stdout)
+    )
+  )
 end
 
-#------------------------------------------------------
-
-# App class
-# @note The whole setup and routing could be placed in a single class definition
-#   but we wanted to show you, that in case of bigger applications, you can create
-#   a structure similar to rails config/routes.rb, etc.
-class App < Karafka::App
+class KarafkaApp < Karafka::App
   setup do |config|
-    # Karafka will autodiscover kafka_hosts based on Zookeeper but we need it set manually
-    # to run tests without running kafka and zookeper
-    config.kafka.seed_brokers = %w[kafka://192.168.1.67:9092]
-    config.client_id = 'inventory_service'
-    config.backend = :inline
-    config.batch_fetching = true
-    # Enable those 2 lines if you use Rails and want to use hash with indifferent access for
-    # Karafka params
-    # require 'active_support/hash_with_indifferent_access'
-    # config.params_base_class = HashWithIndifferentAccess
+    config.kafka.seed_brokers = %w[kafka://0.0.0.0:9092]
+    config.client_id = 'tasks_app'
+    config.logger = Rails.logger
   end
 
-  # after_init do
-  #   WaterDrop.setup { |config| config.deliver = !Karafka.env.test? }
-  # end
-end
+  # Comment out this part if you are not using instrumentation and/or you are not
+  # interested in logging events for certain environments. Since instrumentation
+  # notifications add extra boilerplate, if you want to achieve max performance,
+  # listen to only what you really need for given environment.
+  Karafka.monitor.subscribe(WaterDrop::Instrumentation::StdoutListener.new)
+  Karafka.monitor.subscribe(Karafka::Instrumentation::StdoutListener.new)
+  # Karafka.monitor.subscribe(Karafka::Instrumentation::ProctitleListener.new)
 
-Karafka.monitor.subscribe(Karafka::Instrumentation::Listener)
-
-# Consumer group defined with the 0.6+ routing style (recommended)
-App.consumer_groups.draw do
-  # consumer_group :notifications do
-  #   topic :'accounts-stream' do
-  #     consumer KafkaApp::Consumers::MyTopic
-  #     parser JsonDeserializer
-  #   end
+  # Uncomment that in order to achieve code reload in development mode
+  # Be aware, that this might have some side-effects. Please refer to the wiki
+  # for more details on benefits and downsides of the code reload in the
+  # development mode
   #
-  #   topic :'accounts' do
-  #     consumer KafkaApp::Consumers::MyTopic
-  #     parser JsonDeserializer
-  #   end
-  # end
+  # Karafka.monitor.subscribe(
+  #   Karafka::CodeReloader.new(
+  #     *Rails.application.reloaders
+  #   )
+  # )
 
-  # consumer_group :real_work do
-  #   topic :'accounts-stream' do
-  #     consumer KafkaApp::Consumers::AccountChanges
-  #     parser JsonDeserializer
-  #   end
+  consumer_groups.draw do
+    topic :'accounts-stream' do
+      consumer AccountChangesConsumer
+      parser JsonDeserializer
+    end
 
-  #   topic :'accounts' do
-  #     consumer KafkaApp::Consumers::AccountChanges
-  #     parser JsonDeserializer
-  #   end
-
-  #   topic :'fixed-items' do
-  #     consumer KafkaApp::Consumers::ItemsFixed
-  #     parser JsonDeserializer
-  #   end
-  # end
+    # consumer_group :bigger_group do
+    #   topic :test do
+    #     consumer TestConsumer
+    #   end
+    #
+    #   topic :test2 do
+    #     consumer Test2Consumer
+    #   end
+    # end
+  end
 end
 
-App.boot!
+Karafka.monitor.subscribe('app.initialized') do
+  # Put here all the things you want to do after the Karafka framework
+  # initialization
+end
+
+KarafkaApp.boot!
