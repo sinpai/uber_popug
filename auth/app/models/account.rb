@@ -23,6 +23,7 @@ class Account < ApplicationRecord
 
   after_create do
     account = self
+    self.public_id = SecureRandom.uuid unless self.public_id
 
     # ----------------------------- produce event -----------------------
     event = {
@@ -39,7 +40,7 @@ class Account < ApplicationRecord
       }
     }
     result = SchemaRegistry.validate_event(event, 'accounts.created', version: 1)
-
+    binding.pry
     if result.success?
       WaterDrop::SyncProducer.call(event.to_json, topic: 'accounts-stream')
     end

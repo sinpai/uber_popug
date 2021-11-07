@@ -2,8 +2,17 @@
 
 ENV['RAILS_ENV'] ||= 'development'
 ENV['KARAFKA_ENV'] = ENV['RAILS_ENV']
+ENV['KARAFKA_ROOT_DIR'] = '/home/sinpai/code/uber_popug/tasks'
+ENV['BUNDLE_GEMFILE'] = '/home/sinpai/code/uber_popug/tasks'
 require ::File.expand_path('../config/environment', __FILE__)
 Rails.application.eager_load!
+
+require 'active_support/core_ext/hash'
+require './config/boot'
+
+Dir[
+  './app/consumers/*.rb'
+].each {|file| require_relative file }
 
 # This lines will make Karafka print to stdout like puma or unicorn
 if Rails.env.development?
@@ -43,7 +52,6 @@ class KarafkaApp < Karafka::App
   consumer_groups.draw do
     topic :'accounts-stream' do
       consumer AccountChangesConsumer
-      parser JsonDeserializer
     end
 
     # consumer_group :bigger_group do
@@ -53,6 +61,7 @@ class KarafkaApp < Karafka::App
     #
     #   topic :test2 do
     #     consumer Test2Consumer
+
     #   end
     # end
   end
@@ -64,3 +73,4 @@ Karafka.monitor.subscribe('app.initialized') do
 end
 
 KarafkaApp.boot!
+Karafka::Server.run
