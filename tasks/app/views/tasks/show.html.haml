@@ -1,0 +1,8 @@
+%p#notice= notice
+%label Description
+= @task.description
+
+%label Status
+= @task.status
+= link_to 'Edit', edit_task_path(@task)
+= link_to 'Back', tasks_path
